@@ -9,7 +9,9 @@ const addTasks = (context, payload) => {
   context.commit("ADD_TASK", payload);
 };
 
-
+const updateTasks = (context, payload) => {
+  context.commit("UPDATE_TASK", payload);
+};
 
 const deleteTask = (context, payload) => {
   context.commit("DELETE_TASK", payload);
@@ -18,5 +20,6 @@ const deleteTask = (context, payload) => {
 export default {
   getListTasks,
   addTasks,
+  updateTasks,
   deleteTask,
 };

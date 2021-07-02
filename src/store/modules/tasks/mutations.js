@@ -1,11 +1,16 @@
 const GET_LIST_TASKS = (state, data) => {
   state.listTasks = data;
-  console.log('state.listTasks', state.listTasks);
 };
 
 const ADD_TASK = (state, data) => {
   state.listTasks.push(data);
-  console.log('state.listTasks', state.listTasks);
+};
+
+const UPDATE_TASK = (state, data) => {
+  state.listTasks = state.listTasks.map(item => {
+    if(item.id === data.id) return data
+    if(item.id !== data.id) return item
+  })
 };
 
 const DELETE_TASK = (state, data) => {
@@ -17,5 +22,6 @@ const DELETE_TASK = (state, data) => {
 export default {
   GET_LIST_TASKS,
   ADD_TASK,
+  UPDATE_TASK,
   DELETE_TASK
 };

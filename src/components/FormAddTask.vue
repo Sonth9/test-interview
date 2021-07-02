@@ -2,7 +2,7 @@
   <b-form>
     <validationObserver ref="observerFormAdd" tag="form">
       <div class="box">
-        <div class="form-title">New Tasks</div>
+        <div v-if="!dataDetail" class="form-title">New Tasks</div>
         <div class="row">
           <div class="col-md-12 col-xs-12">
             <b-form-group 
@@ -72,7 +72,16 @@
           </div>
         </div>
         <div class="actions center mt-15">
-          <button class="btn bg-success w-100" @click.prevent="handleAddTask">Add</button>
+          <button 
+            v-if="dataDetail"
+            class="btn bg-success w-100" 
+            @click.prevent="handleUpdateTask"
+          >Update</button>
+          <button
+            v-else
+            class="btn bg-success w-100" 
+            @click.prevent="handleAddTask"
+          >Add</button>
         </div>
       </div>
     </validationObserver>
@@ -90,6 +99,11 @@ export default {
   components: {
     DatePicker
   },
+  props: {
+    dataDetail: {
+      type: Object
+    }
+  },
   data() {
     return {
       piorityOpts: PIORITY_OPTS,
@@ -102,12 +116,21 @@ export default {
       }
     }
   },
+  created() {
+    this.dataDetail && this.cloneData(this.dataDetail)
+  },
 
   methods: {
-    notAfterDate(date) {
-      let now = new Date();
-      return date < new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    cloneData(data) {
+      this.form = {
+        id: data.id,
+        name: data.name,
+        description: data.description,
+        dueDate: data.dueDate,
+        piority: data.piority
+      }
     },
+
     async handleAddTask() {
       const $vm = this;
       const isValid = await $vm.$refs.observerFormAdd.validate();
@@ -124,14 +147,39 @@ export default {
         this.clearForm();
       }
     },
+
+    async handleUpdateTask() {
+      const $vm = this;
+      const isValid = await $vm.$refs.observerFormAdd.validate();
+      if(isValid) {
+        let dataLocalStorage = await getValueFromStorageByKey(LOCAL_STORAGE_KEY.LIST_TASKS) || []
+        this.$store.dispatch('tasks/updateTask', $vm.form);
+        dataLocalStorage = dataLocalStorage.map(item => {
+          if(item.id === $vm.form.id) return $vm.form
+          if(item.id !== $vm.form.id) return item
+        })
+        setValueToStorageByKey(LOCAL_STORAGE_KEY.LIST_TASKS, dataLocalStorage)
+        this.$toasted.clear();
+        this.$toasted.global.showSuccessMessage({
+          message: 'Update task success'
+        });
+        this.$emit('updateSuccess')
+      }
+    },
+    
     clearForm () {
       this.form = {
         id: 0,
-        name: "",
+        name: null,
         description: null,
         dueDate: moment().format("DD/MM/YYYY"),
         piority: 2
       }
+    },
+
+    notAfterDate(date) {
+      let now = new Date();
+      return date < new Date(now.getFullYear(), now.getMonth(), now.getDate());
     }
   }
 }
