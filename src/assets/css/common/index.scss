@@ -1,0 +1,18 @@
+.d-flex {
+  display: flex;
+  align-items: center;
+}
+
+/* error-validate */
+.error {
+  display: flex;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #dc3545;
+}
+
+/* toasted */
+.toasted-primary {
+  background: #07bc0c !important;
+}

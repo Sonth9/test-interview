@@ -1,28 +1,44 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <BaseHeader />
+    <router-view />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BaseHeader from "@/components/common/BaseHeader";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    BaseHeader
   }
 }
 </script>
 
 <style>
+html,
+body {
+  font-family: "Roboto", sans-serif;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+#app {
+  font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: black;
   margin-top: 60px;
 }
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
+@import'~bootstrap/dist/css/bootstrap.css';
+@import "./assets/css/base/_index.scss";
+@import "./assets/css/base/_form.scss";
+@import "./assets/css/base/_color.scss";
+@import "./assets/css/base/_header.scss";
+@import "./assets/css/common/gird.scss";
+@import "./assets/css/common/index.scss";
 </style>
